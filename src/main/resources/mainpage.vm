@@ -1,0 +1,93 @@
+$webResourceManager.requireResource("${atlassian.plugin.key}:shoutboxresources")
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+userdirective = org.apache.velocity.tools.generic.directive.Ifnotnull
+<html>
+	<head>
+		<title>Blog-Eintrag hinzufügen</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+		$webResourceManager.requireResource("com.atlassian.auiplugin:ajs")
+		<link rel="stylesheet" href="aui/css/aui.min.css" media="all">
+		<link rel="stylesheet" href="aui/css/aui-experimental.min.css" media="all">
+		<script src="aui/js/aui.min.js"></script>
+		<script src="aui/js/aui-experimental.min.js"></script>
+		<script src="aui/js/aui-soy.min.js"></script>
+		<meta name="decorator" content="atl.admin">
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+	</head>
+<body>
+
+	<div id="main_div">
+	<form action="/confluence/plugins/servlet/message" method="post" id="admin" class="aui">
+		<input type="submit" name="detailsButton" id="detailsButton" value="Blog-Eintrag hinzufügen" class="aui-button aui-button-primary"/>
+	</form>
+	</div>
+	<hr><hr>
+	#set ($a = 10)
+		#foreach( $message in $messages )
+			#if($a!=0)
+				#set ($a = $a - 1)
+				
+			<div>
+				<div id="user_div"> 
+					<img src="/confluence/$message.getAuthorAvatar()" id="avatar"/>
+				</div>
+
+				<div id="userinfo_div">
+				<form action="/confluence/plugins/servlet/details" method="get" id="admin" class="aui">
+					<input type="text" name="id" value = "$message.getID()" hidden>
+					##<input type="text" name="date" value = "$message.getDate()" hidden>
+					<div id="h_color">
+					<b>Titel des Blog-Eintrags:</b>    $message.getSubject()<br>	
+					</div>
+					<b>User:</b> 					   $message.getAuthor() &nbsp;					
+					<b>Datum:</b> 					   $message.getDate()<br>			
+					<b>Ihre Nachricht:</b>			   $message.getContent()<br>
+						
+					<div id="img_div">	
+					##	#if($message.getImage().isEmpty())
+					##		<img src="/confluence/plugins/servlet/ImageServlet?imageName=$message.getImage()" hidden/><br>
+					##	#else
+					##		<img src="/confluence/plugins/servlet/ImageServlet?imageName=$message.getImage()" class="img_tag"/><br>
+					##	#end
+					</div>
+					
+					<input type="submit" id="button_click_events" value="Kommentar hinzufügen" class="aui-button aui-button-link"/>
+                    <a href="#"><span class="aui-icon aui-icon-small aui-iconfont-comment">Kommentar</span></a>
+
+					<div id="parent_form_mainpage_like">							
+						<form action="/confluence/plugins/servlet/messagelike" method="get" class="aui">
+					   		<input type="text" name="id" value="$messages.getID()" hidden>
+							<span class="aui-icon aui-icon-small aui-iconfont-like"></span>
+							##<input type="submit" value="Gefällt mir" class="aui-input aui-border-0" onclick="$messages.getAuthor()">
+							$message.getLike() Personen gefällt das	
+						</form>	  
+					</div>
+								
+				</form>
+				</div>
+				</div>			
+				<hr>
+			#end
+		#end
+
+
+<button id="btnSave">Save Click</button>
+<script>
+	 $(document).ready(function () {
+
+        $("#btnSave").click(
+            function () {
+                AlertSave();
+            }            
+        );
+    });
+
+function AlertSave() {
+   alert("Alert Message OnClick");        
+}
+</script>
+
+
+
+</body>
+</html>

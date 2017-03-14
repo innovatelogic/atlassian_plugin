@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<title>Blog-Eintrag hinzufügen</title>	
+		<meta name="decorator" content="atl.admin">
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+		$webResourceManager.requireResource("com.atlassian.auiplugin:ajs")	
+ 		<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+ 		
+ 		<link rel="stylesheet" href="aui/css/aui.min.css" media="all">
+		<link rel="stylesheet" href="aui/css/aui-experimental.min.css" media="all">
+		<script src="aui/js/aui.min.js"></script>
+		<script src="aui/js/aui-experimental.min.js"></script>
+		<script src="aui/js/aui-soy.min.js"></script>
+		
+        <!-- External dependencies -->
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/sinon.js/1.15.4/sinon.js"></script>
+        <script src="//aui-cdn.atlassian.com/aui-adg/5.9.21/js/aui.js"></script>
+        <script src="//aui-cdn.atlassian.com/aui-adg/5.9.21/js/aui-experimental.js"></script>
+        <script src="//aui-cdn.atlassian.com/aui-adg/5.9.21/js/aui-datepicker.js"></script>
+        <link rel="stylesheet" type="text/css" href="//aui-cdn.atlassian.com/aui-adg/5.9.21/css/aui.css"/>
+        <link rel="stylesheet" type="text/css" href="//aui-cdn.atlassian.com/aui-adg/5.9.21/css/aui-experimental.css"/>
+        <!-- / External dependencies -->
+		
+	</head>
+<body>
+
+	<hr>
+	<form action="/confluence/plugins/servlet/message" method="get" class="aui" enctype="multipart/form-data" id="form">
+		  <div class="field-group">
+			<label>Titel des Blog-Eintrags:</label> 
+			<input id="subject" name="subject" type="text"  class="text">
+		  </div>
+          <div class="field-group">
+			<label for="demo-info-message">Ihre Nachricht:</label> 		 
+			<input input id="demo-info-message" name="content" type="text" class="text" data-aui-validation-field maxlength="10" data-aui-notification-field data-aui-notification-info="Maximale L&auml;nge 10 Symbole!">
+		  </div>
+		 <div class="field-group">		 	
+			<input id="file" name="file" type="file" size="300" multiple>
+			<script>
+		  		#include("upload.js")
+		  	</script>
+		  </div>
+          <div class="field-group">
+            <input id="imageName" name="imageName" type="text" hidden/>
+			<input id="button_click_events" name="sendButton" type="submit" value="Speichern" class="aui-button aui-button-link">
+		  </div>
+	</form>	
+	<hr>
+	
+</body>
+</html>

@@ -1,0 +1,55 @@
+#main_div {
+	width:100%;
+	align:left;
+	margin-left:-105px;
+}
+#img_div {
+	max-width: 90%;
+	height: auto;
+}
+img.img_tag {
+	max-width: 90%;
+    height: auto;
+}
+.field-group {
+	width:99%;
+	align:left;
+}
+.text_input {
+	width:99%;
+	align:left;
+}
+#file {
+	width:99%;
+	align:left;
+}
+.comment_text_input {
+	width:85%;
+}
+#user_div {
+	width:40px; 
+	height:40px; 
+	float:left;
+}
+#userinfo_div {
+	margin-left:42px;
+	width:100%;
+}
+#h2_textcolor {
+	color:#3572b0;
+}
+#b_textcolor {
+	color:black;
+}
+#b_text_like {
+	color:black;
+	font-size: 0.8em;
+}
+.aui-button aui-button-link {
+	border: none;
+	outline:none;
+}
+#button_click_events {
+	border: none;
+	outline:none;
+}

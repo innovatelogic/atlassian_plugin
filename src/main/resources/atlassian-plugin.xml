@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<atlassian-plugin key="${atlassian.plugin.key}" name="${project.name}" plugins-version="2">
+  <plugin-info>
+    <description>${project.description}</description>
+    <version>${project.version}</version>
+    <vendor name="${project.organization.name}" url="${project.organization.url}"/>
+    <param name="plugin-icon">images/pluginIcon.png</param>
+    <param name="plugin-logo">images/pluginLogo.png</param>
+  </plugin-info>
+  
+  <resource type="i18n" name="i18n" location="shoutbox.properties"/>
+  
+  <!-- <resource type="download" name="images/" location="/images"/> 
+  
+  <!-- add web resources -->
+  <web-resource key="shoutboxresources" name="shoutbox Web Resources">
+    <dependency>com.atlassian.auiplugin:ajs</dependency>
+    <resource type="download" name="shoutbox.css" location="/css/shoutbox.css"/>
+    <resource type="download" name="images/" location="/images"/>  
+    <context>atl.general</context>
+    <context>atl.admin</context>
+    <context>css.resources.shoutbox</context>
+    <context>atl.confluence.macros.expand.mobile</context>
+  </web-resource>
+  
+  <web-resource key="shout" name="shout" >
+  		<dependency>com.atlassian.auiplugin:ajs</dependency>
+        <resource type="velocity" name="template" location="mainpage.vm"/>
+        <resource type="download" name="shoutbox.js" location="/js/shoutbox.js"/>
+     <!--   <resource type="download" name="show-hide.js" location="show-hide.js"/> -->
+        <resource type="upload" name="upload.js" location="upload.js"/>
+        <context>atl.general</context>
+        <!--<context>atl.confluence.macros.expand.desktop</context>-->
+  </web-resource>
+  
+  <web-resource key="shout-mobile" name="shout-mobile" >
+  		<dependency>com.atlassian.auiplugin:ajs</dependency>
+        <resource type="velocity" name="template" location="mobile-mainpage.vm"/>
+        <resource type="download" name="upload-mobile.js" location="upload-mobile.js"/>
+        <resource type="download" name="test.js" location="test.js"/>
+        <resource type="download" name="shoutbox.css" location="/css/shoutbox-mobile.css"/>
+        <!--<context>atl.mobile.confluence.app.frame</context>-->
+        <context>atl.mobile.confluence.view.content</context>
+        <!--<context>atl.confluence.macros.expand.mobile</context>-->
+  </web-resource>
+  
+    <!-- Registers the macro in a plugin module. 
+    icon="/download/resources/${atlassian.plugin.key}/images/logo.jpg"
+    -->
+    <!--  <url-pattern>/SHOUT/shoutbox+Home</url-pattern> -->
+    
+  <xhtml-macro name="shoutbox" 
+  			   class="com.atlassian.tutorial.myPlugin.macro.ShoutboxMacro"			   
+			   key="shoutbox-macro">	
+  	<device-type>mobile</device-type>
+	<parameters/>
+    <description>Shoutbox</description>
+  </xhtml-macro>
+  
+    <xhtml-macro name="details" 
+  			   class="com.atlassian.tutorial.myPlugin.macro.DetailsMacro"			   
+			   key="details-macro">	
+  	<device-type>mobile</device-type>
+	<parameters/>
+    <description>DetailsShout</description>
+  </xhtml-macro>
+  
+  <!-- SERVLETS -->
+  <servlet name="message" class="com.atlassian.tutorial.myPlugin.servlet.MessageServlet" key="message">
+    <url-pattern>/message</url-pattern>
+  </servlet>
+  <servlet name="mainpage" class="com.atlassian.tutorial.myPlugin.servlet.MainPageServlet" key="mainpage">
+    <url-pattern>/main</url-pattern>
+  </servlet>
+  <servlet name="details" class="com.atlassian.tutorial.myPlugin.servlet.DetailsServlet" key="details">
+    <url-pattern>/details</url-pattern>
+  </servlet>
+  <servlet name="comment" class="com.atlassian.tutorial.myPlugin.servlet.CommentServlet" key="comment">
+    <url-pattern>/commenton</url-pattern>
+  </servlet>
+  <servlet name="messagedelete" class="com.atlassian.tutorial.myPlugin.servlet.DeleteMessageServlet" key="deletemessage">
+    <url-pattern>/messagedelete</url-pattern>
+  </servlet>
+  <servlet name="commentdelete" class="com.atlassian.tutorial.myPlugin.servlet.DeleteCommentServlet" key="commentdelete">
+    <url-pattern>/commentdelete</url-pattern>
+  </servlet>
+  <servlet name="editmessage" class="com.atlassian.tutorial.myPlugin.servlet.EditMessageServlet" key="editmessage">
+    <url-pattern>/editmessage</url-pattern>
+  </servlet>
+  <servlet name="editcomment" class="com.atlassian.tutorial.myPlugin.servlet.EditCommentServlet" key="editcomment">
+    <url-pattern>/editcomment</url-pattern>
+  </servlet>
+  <servlet name="commentlike" class="com.atlassian.tutorial.myPlugin.servlet.CommentLikeServlet" key="commentlike">
+    <url-pattern>/commentlike</url-pattern>
+  </servlet>
+  <servlet name="messagelike" class="com.atlassian.tutorial.myPlugin.servlet.MessageLikeServlet" key="messagelike">
+    <url-pattern>/messagelike</url-pattern>
+  </servlet> 	
+  <servlet name="upload" class="com.atlassian.tutorial.myPlugin.servlet.LoadServlet" key="upload">
+	<url-pattern>/upload</url-pattern>
+  </servlet>
+  <servlet name="image" class="com.atlassian.tutorial.myPlugin.servlet.ImageServlet" key="image">
+	<url-pattern>/ImageServlet</url-pattern>
+  </servlet>
+  
+  <!-- REST -->
+  <rest name="My Rest Resource" i18n-name-key="my.plugin.name" key="my-rest-resource" path="/shoutbox" version="1.0">
+		<description key="shoutbox.description">The Shoutbox Plugin</description>
+ </rest>
+  
+  <!-- ACTIVE OBJECTS -->
+  <ao key="ao-module">
+    <entity>com.atlassian.tutorial.myPlugin.entity.MessageEntity</entity>
+    <entity>com.atlassian.tutorial.myPlugin.entity.CommentEntity</entity>
+    <entity>com.atlassian.tutorial.myPlugin.entity.LikeMessageEntity</entity>
+    <entity>com.atlassian.tutorial.myPlugin.entity.LikeCommentEntity</entity>
+  </ao>
+  
+  <!-- COMPONENT-IMPORTS -->
+  <!--
+  <component-import key="ao" name="Active Objects service" interface="com.atlassian.activeobjects.external.ActiveObjects">
+    <description>Component to access Active Objects functionality from the plugin</description>
+  </component-import>
+  
+  <component-import key="user-manager" name="SAL User Manager" interface="com.atlassian.sal.api.user.UserManager">
+    <description>The SAL user manager</description>
+  </component-import>
+  
+  <component-import key="profile-manager" name="SAL prof Manager"
+	interface="com.atlassian.sal.api.user.UserProfile" filter="">
+  </component-import>
+  
+  <component-import key="applicationProperties" interface="com.atlassian.sal.api.ApplicationProperties"/>
+  <component-import key="templateRenderer" interface="com.atlassian.templaterenderer.TemplateRenderer" filter=""/>
+
+  <component key="tx-processor" name="Transactional Annotation Processor" class="com.atlassian.activeobjects.external.TransactionalAnnotationProcessor">
+    <decription>Processes @Transactional annotations.</decription>
+  </component>
+  
+  <component key="myPluginComponent" class="com.atlassian.tutorial.myPlugin.impl.MyPluginComponentImpl" public="true">
+    <interface>com.atlassian.tutorial.myPlugin.api.MyPluginComponent</interface>
+  </component>
+  -->
+</atlassian-plugin>

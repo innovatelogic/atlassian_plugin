@@ -1,0 +1,158 @@
+##$webResourceManager.requireResourcesForContext("${atlassian.plugin.key}:shoutboxresources")
+$webResourceManager.requireResourcesForContext("css.resources.shoutbox")
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+	<head>
+		<title>Blog-Eintrag bearbeiten</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<meta name="decorator" content="atl.admin">
+		$webResourceManager.requireResource("com.atlassian.auiplugin:ajs")
+		<link rel="stylesheet" href="aui/css/aui.min.css" media="all">
+		<link rel="stylesheet" href="aui/css/aui-experimental.min.css" media="all">
+		<script src="aui/js/aui.min.js"></script>
+		<script src="aui/js/aui-experimental.min.js"></script>
+		<script src="aui/js/aui-soy.min.js"></script>      
+	</head>
+<body>
+	<div id="main_div">
+	
+		<div id="user_div">
+			<img src="/confluence/$messages.getAuthorAvatar()" id="avatar" class="aui">
+		</div>
+		<div id="userinfo_div">
+		   <div id="h_color">
+			<b>Titel des Blog-Eintrags:</b> $messages.getSubject()<br>
+		   </div>
+			<b>Verfasser:</b>	 			$messages.getAuthor() &nbsp;
+			<b>Datum:</b>                   $messages.getDate()<br>
+			<b>Ihre Nachricht:</b> 			$messages.getContent()<br>
+			#if($message.getImage().isEmpty())
+				<img src="/confluence/plugins/servlet/ImageServlet?imageName=$messages.getImage()" hidden/><br>
+			#else
+				<img src="/confluence/plugins/servlet/ImageServlet?imageName=$messages.getImage()" style="width:350px;"/><br>
+			#end
+		</div>
+	
+	#if($user.equals($messages.getAuthor()))
+		<div id="parent_form">	
+	     	<div class="left_form">
+	     	<input id="dialog-show-button" type="submit" value="bearbeiten" class="aui-button aui-button-link"/> 
+	     	    <!-- Render the dialog -->
+                <section role="dialog" id="demo-dialog" class="aui-layer aui-dialog2 aui-dialog2-small" aria-hidden="true">
+	            <div class="aui-dialog2-content">
+			        <form action="/confluence/plugins/servlet/editmessage" method="get" class="aui">
+				   		<input type="text" name="id" value = "$messages.getID()" hidden>
+				       	<input type="text" name="currentComment" value = "$messages.getContent()" hidden>
+						<input type="text" name="comment" id="edit_text_input" value="$messages.getContent()" data-aui-validation-field maxlength="10">
+						<input id="dialog-show-button" type="submit" value="bearbeiten" class="aui-button aui-button-link"/> 
+					</form>
+				</div>
+				</section>
+				<script>
+	               #include("show-hide-message.js")
+                </script>	 
+			</div> 
+			<div class="right_form">				
+				<form action="/confluence/plugins/servlet/messagedelete" method="get" class="aui">
+			   		<input type="text" name="subject" value = "$messages.getID()" hidden>
+					<input id="button_click_events" type="submit" value="löschen" class="aui-button aui-button-link"/> 
+				</form>
+			</div>
+		</div>
+		<div id="parent_form">					
+				<form action="/confluence/plugins/servlet/messagelike" method="get" class="aui">
+			   		<input type="text" name="id" value = "$messages.getID()" hidden>
+					<span class="aui-icon aui-icon-small aui-iconfont-like"></span>
+					<input type="submit" value="Gefällt mir" class="aui-input aui-border-0" onclick="$messages.getAuthor()">
+					$like Personen gefällt das
+				</form>	  	  
+	#else
+				<form action="/confluence/plugins/servlet/messagelike" method="get" class="aui">
+			   		<input type="text" name="id" value = "$messages.getID()" hidden>
+					<span class="aui-icon aui-icon-small aui-iconfont-like"></span>
+					<input type="submit" value="Gefällt mir" class="aui-input aui-border-0">
+					$like Personen gefällt das 
+				</form>	 
+		</div>
+		<br> 
+   	#end   
+   			##Like: $like
+   	
+				<form action="/confluence/plugins/servlet/commenton" method="get" class="aui">
+					<input type="text" name="id" value = "$messages.getID()" hidden>
+					<textarea class="comment-editor" id="textarea-add-comment" placeholder="Kommentar..." name="comment"></textarea><br>
+					##<input type="text" name="comment" id="comment" placeholder="Kommentar...">
+					<input type="submit" id="button_click_events" value="Kommentar hinzufügen" class="aui-button aui-button-link"/> 	
+				</form>	
+	</div>
+	
+<h1>Kommentare</h1>
+<hr>
+	#foreach( $comment in $comments )
+	<div id="main_div_comment">
+		<div id="user_div">
+			<img src="/confluence/$comment.getAuthorAvatar()" style="width:50px; height:50px;" class="aui">
+		</div>
+		<div id="userinfo_div">	
+			<b>Verfasser:</b>	 			$comment.getAuthor() &nbsp;
+			<b>Datum:</b>                   $comment.getDate()<br>
+			<b>Ihr Kommentar:</b> 			$comment.getComment()<br>
+		</div>
+
+	#if($user.equals($comment.getAuthor()))
+			
+	    <div id="parent_form">	
+	     	<div class="left_form">
+	     	
+	     	<input id="dialog-show-button2" type="submit" value="bearbeiten" class="aui-button aui-button-link"/>
+			<!-- Render the dialog -->
+            <section role="dialog" id="demo-dialog2" class="aui-layer aui-dialog2 aui-dialog2-small" aria-hidden="true">
+	        <div class="aui-dialog2-content">
+			    <form action="/confluence/plugins/servlet/editcomment" method="get" class="aui">
+			   		<input type="text" name="id" value = "$messages.getID()" hidden>
+			       	<input type="text" name="currentComment" value = "$comment.getComment()" hidden>
+					<input type="text" name="comment" id="edit_text_input" value = "$comment.getComment()" data-aui-validation-field maxlength="500" data-aui-notification-field data-aui-notification-info="Maximale L&auml;nge 500 Symbole!">
+					<input id="button_click_events" type="submit" value="bearbeiten" class="aui-button aui-button-link"/> 
+				</form>	
+			</div>
+			</section>
+			<script>
+	            #include("show-hide-comment.js")
+            </script>
+	   	 
+			</div> 
+			<div class="right_form">			
+				<form action="/confluence/plugins/servlet/commentdelete" method="get" class="aui">
+					<input type="text" name="id" value = "$messages.getID()" hidden>
+					<input type="text" name="comment" value = "$comment.getComment()" hidden>
+					<input id="button_click_events" type="submit" value="löschen" class="aui-button aui-button-link"/> 
+				</form>
+			</div>
+		</div>		
+	
+   	#end    
+   	#set($count = 0)
+	   #foreach ($like in $comment.getLikes())
+	   		#if($like.getLike() == 1)
+	   			#set($count = $count + 1)
+	   		#end
+	   #end	 
+	   <div id="comment_like">  
+		<form action="/confluence/plugins/servlet/commentlike" method="get" class="aui">
+	   		<input type="text" name="id" value = "$messages.getID()" hidden>
+	   		<input type="text" name="comment" value = "$comment.getComment()" hidden>
+	   		<span class="aui-icon aui-icon-small aui-iconfont-like"></span>
+			<input type="submit"  value="Gefällt mir" class="aui-input aui-border-0"/>
+			$count Personen gefällt das
+		</form>
+	   </div>		   	   
+   	   ##Like: $count
+   	   <hr>
+	#end
+	</div>
+
+</body>
+</html>
